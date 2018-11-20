@@ -1,11 +1,10 @@
 import { expand } from '@emmetio/expand-abbreviation';
 import { dom } from 'isomorphic-jsx';
-import { parse } from 'acorn-jsx';
-import { generate } from 'escodegen'; // TODO: reimplement escodegen since it doesn't support jsx
 import { selector as $, escapeHtml } from './helper';
 import { parseSync } from "@babel/core";
-import babelrc from '../.babelrc';
-console.log(babelrc);
+//import babelrc from '../.babelrc';
+import Elements from './elements';
+import Pane from './pane';
 
 document.head.innerHTML = <style>{`
 	header {
@@ -18,7 +17,7 @@ document.head.innerHTML = <style>{`
 		position: fixed;
 		padding: 10px 0px 30px 50px;
 	}
-	section {
+	body > section {
 		margin-top: 100px;
 	}
 `}</style>;
@@ -28,11 +27,11 @@ document.body.innerHTML =
 		<h1> Prototyper </h1>
 	</header> +
 	<section>
-		<input id="test" />
-		<iframe id="content" width="300px" height="400px" />
-		<div id="output">
-
-		</div>
+		<input id="test" placeholder="emmet" />
+	{/*<iframe id="content" width="300px" height="400px" />*/}
+		<Pane title="output">
+			<div id="output" />
+		</Pane>
 	</section>;
 
 $('#test').addEventListener('keypress', e => {
@@ -45,12 +44,18 @@ $('#test').addEventListener('keypress', e => {
 
 		const output = `const Component = ({children}) => \n ${html};`;
 
-		console.log(output);
-		const parsed = parse(output, { plugins: { jsx: true } });
-		const parsed2 = parseSync(output, babelrc);
-		console.log(parsed, parsed2)
+		console.log('output:', output);
+		const presets = [
+			require('@babel/preset-react'),
+			require('@babel/preset-env')
+		];
+		const parsed = parseSync(output, {
+//			...babelrc,
+			presets
+		});
+		console.log('parsed:', parsed.program.body)
 
-		$('#content').src = "data:text/html;charset=utf-8," + html;
-		$('#output').innerHTML = <pre>{escapeHtml(generate(parsed))}</pre>;
+		//$('#content').src = "data:text/html;charset=utf-8," + html;
+		$('#output').innerHTML = <Elements parsed={parsed} />
 	}
 });

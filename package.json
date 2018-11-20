@@ -26,10 +26,6 @@
   "dependencies": {
     "isomorphic-jsx": "^0.1.5",
     "express": "^4.16.4",
-    "@emmetio/expand-abbreviation": "^0.7.1",
-    "acorn": "^5.7.3",
-    "acorn-jsx": "^4.1.1",
-    "emmet": "^1.6.3",
-    "escodegen": "^1.11.0"
+    "@emmetio/expand-abbreviation": "^0.7.1"
   }
 }

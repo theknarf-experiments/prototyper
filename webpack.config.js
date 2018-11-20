@@ -5,13 +5,15 @@ const webpack = require('webpack'),
 module.exports = {
 	module: {
 		rules: [
-			{ loader: 'babel-loader', test: /\.jsx?$/ }
+			{ test: /\.jsx?$/, loader: 'babel-loader' },
+			{ test: /\.babelrc$/, loader: 'json5-loader' }
 		]
 	},
-
 	mode: 'development',
-
 	plugins: [
 		new HtmlWebpackPlugin()
-	]
+	],
+	node: {
+		fs: 'empty'
+	}
 };

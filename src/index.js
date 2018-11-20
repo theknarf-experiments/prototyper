@@ -3,6 +3,9 @@ import { dom } from 'isomorphic-jsx';
 import { parse } from 'acorn-jsx';
 import { generate } from 'escodegen'; // TODO: reimplement escodegen since it doesn't support jsx
 import { selector as $, escapeHtml } from './helper';
+import { parseSync } from "@babel/core";
+import babelrc from '../.babelrc';
+console.log(babelrc);
 
 document.head.innerHTML = <style>{`
 	header {
@@ -20,32 +23,32 @@ document.head.innerHTML = <style>{`
 	}
 `}</style>;
 
-document.body.innerHTML = [
+document.body.innerHTML =
 	<header>
 		<h1> Prototyper </h1>
-	</header>,
+	</header> +
 	<section>
 		<input id="test" />
 		<iframe id="content" width="300px" height="400px" />
 		<div id="output">
 
 		</div>
-	</section>
-];
+	</section>;
 
 $('#test').addEventListener('keypress', e => {
 	if((e.witch||e.keyCode) == 13) {
-		const html = expand(e.target.value, {
+		var html = expand(e.target.value, {
 			profile: {
 				selfClosingStyle: 'xhtml'
 			}
 		});
 
-		const output = 'const Component = ({children}) => \n' + html + ';';
+		const output = `const Component = ({children}) => \n ${html};`;
 
 		console.log(output);
 		const parsed = parse(output, { plugins: { jsx: true } });
-		console.log(parsed)
+		const parsed2 = parseSync(output, babelrc);
+		console.log(parsed, parsed2)
 
 		$('#content').src = "data:text/html;charset=utf-8," + html;
 		$('#output').innerHTML = <pre>{escapeHtml(generate(parsed))}</pre>;

@@ -1,9 +1,9 @@
 {
-	presets: ['env', 'react'],
-	plugins: [
-		['transform-react-jsx', {
-			'pragma': 'dom'
-		}]
-	]
+  presets: [
+    [ '@babel/preset-react', {
+        pragma: 'dom',
+        throwIfNamespace: false
+    }],
+	 '@babel/preset-env'
+  ]
 }
-

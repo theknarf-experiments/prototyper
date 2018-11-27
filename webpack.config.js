@@ -1,7 +1,8 @@
 const webpack = require('webpack'),
 		path = require('path'),
 		HtmlWebpackPlugin = require('html-webpack-plugin'),
-		MiniCssExtractPlugin = require("mini-css-extract-plugin");
+		MiniCssExtractPlugin = require("mini-css-extract-plugin"),
+		HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 module.exports = {
 	module: {
@@ -12,9 +13,27 @@ module.exports = {
 		]
 	},
 	mode: 'development',
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					chunks: 'initial',
+					name: 'vendor',
+					test: /node_modules/,
+					enforce: true
+				},
+			}
+		}
+	},
 	plugins: [
-		new HtmlWebpackPlugin(),
 		new MiniCssExtractPlugin(),
+		new HtmlWebpackPlugin({
+			inlineSource: '(.css|main.js)$',
+			minify: true,
+			title: 'Prototyper',
+			xhtml: true,
+		}),
+		new HtmlWebpackInlineSourcePlugin(),
 	],
 	node: {
 		fs: 'empty'

@@ -1,10 +1,12 @@
 import { expand } from '@emmetio/expand-abbreviation';
-import { dom } from 'isomorphic-jsx';
 import { selector as $, escapeHtml } from './helper';
-import { parseSync } from "@babel/core";
+import { parseSync } from '@babel/core';
 //import babelrc from '../.babelrc';
 import Elements from './elements';
 import Pane from './pane';
+
+import { dom } from 'isomorphic-jsx';
+dom(); // @babel/preset-typescript hack
 
 document.head.innerHTML = <style>{`
 	header {
@@ -12,10 +14,14 @@ document.head.innerHTML = <style>{`
 		top: 0;
 		left: 0;
 		right: 0;
-		height: 50px;
+		height: 20px;
 		color: white;
 		position: fixed;
-		padding: 10px 0px 30px 50px;
+		padding: 0px 0px 50px 10px;
+		font-family: sans-serif;
+	}
+	header > h1 {
+		font-size: 30px;
 	}
 	body > section {
 		margin-top: 100px;
@@ -34,9 +40,11 @@ document.body.innerHTML =
 		</Pane>
 	</section>;
 
+const test : string = "test";
+
 $('#test').addEventListener('keypress', e => {
-	if((e.witch||e.keyCode) == 13) {
-		var html = expand(e.target.value, {
+	if((e.which||e.keyCode) == 13) {
+		var html = expand((e.target as HTMLInputElement).value, {
 			profile: {
 				selfClosingStyle: 'xhtml'
 			}

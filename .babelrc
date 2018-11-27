@@ -1,9 +1,14 @@
 {
   presets: [
+	 '@babel/preset-env',
     [ '@babel/preset-react', {
         pragma: 'dom',
         throwIfNamespace: false
     }],
-	 '@babel/preset-env'
+	 ['@babel/preset-typescript', {
+	 	allExtensions: true,
+		jsxPragme: 'dom',
+		isTSX: true,
+	 }],
   ]
 }

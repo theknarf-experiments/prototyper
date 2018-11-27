@@ -1,6 +1,8 @@
-import { dom } from 'isomorphic-jsx';
 import generate from '@babel/generator';
 import { selector as $, escapeHtml } from './helper';
+
+import { dom } from 'isomorphic-jsx';
+dom(); // @babel/preset-typescript hack
 
 const presets = [
 	require('@babel/preset-react'),

@@ -1,6 +1,12 @@
 import { dom } from 'isomorphic-jsx';
+dom(); // @babel/preset-typescript hack
 
-const Pane = ({ title, children }) =>
+interface tmp {
+	title: string,
+	children?: string,
+}
+
+const Pane : (t: tmp) => string = ({ title, children }) =>
 	<div class="pane">
 		<span class="header">{title}</span>
 		<section>

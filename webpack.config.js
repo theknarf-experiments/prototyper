@@ -5,7 +5,7 @@ const webpack = require('webpack'),
 module.exports = {
 	module: {
 		rules: [
-			{ test: /\.jsx?$/, loader: 'babel-loader' },
+			{ test: /\.(js|ts)x?$/, loader: 'babel-loader' },
 			{ test: /\.babelrc$/, loader: 'json5-loader' }
 		]
 	},
@@ -15,5 +15,8 @@ module.exports = {
 	],
 	node: {
 		fs: 'empty'
-	}
+	},
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+	},
 };

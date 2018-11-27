@@ -4,11 +4,15 @@ import { parseSync } from '@babel/core';
 //import babelrc from '../.babelrc';
 import Elements from './elements';
 import Pane from './pane';
+//@ts-ignore
+import GoldenLayout from 'golden-layout';
+import 'golden-layout/src/css/goldenlayout-base.css';
+import 'golden-layout/src/css/goldenlayout-dark-theme.css';
 
 import { dom } from 'isomorphic-jsx';
 dom(); // @babel/preset-typescript hack
 
-document.head.innerHTML = <style>{`
+document.head.innerHTML += <style>{`
 	header {
 		background: #001;
 		top: 0;
@@ -26,6 +30,10 @@ document.head.innerHTML = <style>{`
 	body > section {
 		margin-top: 100px;
 	}
+	.output {
+		background: lightgrey;
+		padding: 20px;
+	}
 `}</style>;
 
 document.body.innerHTML =
@@ -35,12 +43,39 @@ document.body.innerHTML =
 	<section>
 		<input id="test" placeholder="emmet" />
 	{/*<iframe id="content" width="300px" height="400px" />*/}
-		<Pane title="output">
-			<div id="output" />
-		</Pane>
 	</section>;
 
-const test : string = "test";
+var config = {
+    content: [{
+        type: 'row',
+        content:[{
+            type: 'component',
+            componentName: 'testComponent',
+            componentState: { func: () => <div id='output' class='output' /> }
+        },{
+            type: 'column',
+            content:[{
+                type: 'component',
+                componentName: 'testComponent',
+                componentState: { label: 'B' }
+            },{
+                type: 'component',
+                componentName: 'testComponent',
+                componentState: { label: 'C' }
+            }]
+        }]
+    }]
+};
+let myLayout = new GoldenLayout( config );
+myLayout.registerComponent( 'testComponent', ( container, state ) => {
+	const Func = state.func;
+	container.getElement().html(
+		(typeof Func == 'function') ?
+		<Func /> :
+		<h2>{ state.label }</h2>
+	);
+});
+myLayout.init();
 
 $('#test').addEventListener('keypress', e => {
 	if((e.which||e.keyCode) == 13) {

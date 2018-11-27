@@ -4,45 +4,20 @@ import Emmet from './Emmet';
 import GoldenLayout from 'golden-layout';
 import 'golden-layout/src/css/goldenlayout-base.css';
 import 'golden-layout/src/css/goldenlayout-dark-theme.css';
+import './default.css';
 
-import { dom } from 'isomorphic-jsx';
-dom(); // @babel/preset-typescript hack
-
-document.head.innerHTML += <style>{`
-	header {
-		background: #001;
-		top: 0;
-		left: 0;
-		right: 0;
-		height: 20px;
-		color: white;
-		position: fixed;
-		padding: 0px 0px 50px 10px;
-		font-family: sans-serif;
-	}
-	header > h1 {
-		font-size: 30px;
-	}
-	body > section {
-		margin-top: 70px;
-	}
-	.output {
-		background: lightgrey;
-		padding: 20px;
-	}
-`}</style>;
+import { dom, fragment } from 'isomorphic-jsx';
+dom(); fragment({ children: [] }); // @babel/preset-typescript hack
 
 //@ts-ignore
 let promise = new Promise((resolve, reject) => setTimeout(resolve, 0));
 
-document.body.innerHTML =
+document.body.innerHTML = <>
 	<header>
 		<h1> Prototyper </h1>
-	</header> +
-	<section>
-		<Emmet id="test" onReady={promise} />
-	{/*<iframe id="content" width="300px" height="400px" />*/}
-	</section>;
+	</header>
+	<Emmet id="test" onReady={promise} />
+</>;
 
 var config = {
 	content: [{
@@ -51,28 +26,47 @@ var config = {
 			{
 				type: 'component',
 				width: 20,
+				title: 'File viewer',
 				componentName: 'testComponent',
-				componentState: { label: 'File viewer' }
+				componentState: { label: 'file viewer' }
 			},
 			{
 				type: 'column',
 				content: [
 					{
 						type: 'component',
+						isClosable: false,
 						componentName: 'testComponent',
-						componentState: { label: 'main design view' }
+						title: 'Design view',
+						componentState: { func: () =>
+							<iframe id="content" width="300px" height="400px" style={{ background: 'white' }} />
+						}
 					},
 					{
-						type: 'component',
-						componentName: 'testComponent',
-						componentState: { func: () => <div id='output' class='output' /> }
-					}
+						type: 'stack',
+						height: 40,
+						content: [
+							{
+								type: 'component',
+								componentName: 'testComponent',
+								title: 'Source view',
+								componentState: { func: () => <div id='output' class='output' /> }
+							},
+							{
+								type: 'component',
+								componentName: 'testComponent',
+								title: 'Compiled code (Babel)',
+								componentState: { func: () => <div id='output_compiled' class='output' /> }
+							}
+						]
+					},
 				]
 			},
 			{
 				type: 'component',
 				width: 20,
 				componentName: 'testComponent',
+				title: 'Property tree',
 				componentState: { label: 'property tree' }
 			},
 		]
@@ -84,7 +78,7 @@ myLayout.registerComponent( 'testComponent', ( container, state ) => {
 	container.getElement().html(
 		(typeof Func == 'function') ?
 		<Func /> :
-		<h2>{ state.label }</h2>
+		<h2 style={{ color: 'white', padding: '0 20px' }}>{ state.label }</h2>
 	);
 });
 myLayout.init();

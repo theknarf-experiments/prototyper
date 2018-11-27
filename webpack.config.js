@@ -8,7 +8,7 @@ module.exports = {
 	module: {
 		rules: [
 			{ test: /\.(js|ts)x?$/, loader: 'babel-loader' },
-			{ test: /\.babelrc$/, loader: 'json5-loader' },
+			{ test: /\.babelrc$/, loader: [ 'babelrc-loader', 'json5-loader' ] },
 			{ test: /\.css$/, use: [ MiniCssExtractPlugin.loader, 'css-loader' ] },
 		]
 	},
@@ -41,4 +41,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
 	},
+	resolveLoader: {
+		modules: [ path.resolve(__dirname, 'loaders'), 'node_modules' ]
+	}
 };

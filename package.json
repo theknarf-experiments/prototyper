@@ -37,6 +37,6 @@
     "@fortawesome/fontawesome-free": "^5.5.0",
     "express": "^4.16.4",
     "golden-layout": "^1.5.9",
-    "isomorphic-jsx": "^0.1.5"
+    "isomorphic-jsx": "^0.3.0"
   }
 }

@@ -3,6 +3,7 @@
 	 '@babel/preset-env',
     [ '@babel/preset-react', {
         pragma: 'dom',
+		  pragmaFrag: 'fragment',
         throwIfNamespace: false
     }],
 	 ['@babel/preset-typescript', {

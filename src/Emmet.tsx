@@ -1,10 +1,11 @@
-//import babelrc from '../.babelrc';
+//@ts-ignore
+import babelrc from '../.babelrc';
 import { expand } from '@emmetio/expand-abbreviation';
 import { selector as $, escapeHtml } from './helper';
-import { parseSync } from '@babel/core';
+import { parseSync, transform } from '@babel/core';
 import Elements from './elements';
 
-import { dom } from 'isomorphic-jsx';
+import { dom, fragment } from 'isomorphic-jsx';
 dom(); // @babel/preset-typescript hack
 
 const Emmet = ({ id, onReady }) => {
@@ -48,18 +49,20 @@ const Emmet = ({ id, onReady }) => {
 
 				const output = `const Component = ({children}) => \n <>${html}</>;`;
 
-				//console.log('output:', output);
-				const presets = [
-					require('@babel/preset-react'),
-					require('@babel/preset-env')
-				];
-				const parsed = parseSync(output, {
-					//...babelrc,
-					presets
-				});
+				const parsed = parseSync(output, babelrc);
 				//console.log('parsed:', parsed.program.body)
-
-				//$('#content').src = "data:text/html;charset=utf-8," + html;
+				transform(output, babelrc, (err, result) => {
+					const code = "import { dom, fragment } from 'isomorphic-jsx';\n\n" + result.code;
+					$('#output_compiled').innerHTML = <pre><code>{escapeHtml(code)}</code></pre>;
+					//@ts-ignore
+					window.dom = dom;
+					//@ts-ignore
+					window.fragment = fragment;
+					//@ts-ignore
+					window.updateContent = ( html ) => $('#content').src = "data:text/html;charset=utf-8," + html;
+					eval(result.code + "\n\n var result = dom(Component); updateContent(result);");
+				});
+				
 				$('#output').innerHTML = <Elements parsed={parsed} />
 			}
 		});

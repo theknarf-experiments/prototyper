@@ -45,25 +45,38 @@ document.body.innerHTML =
 	</section>;
 
 var config = {
-    content: [{
-        type: 'row',
-        content:[{
-            type: 'component',
-            componentName: 'testComponent',
-            componentState: { func: () => <div id='output' class='output' /> }
-        },{
-            type: 'column',
-            content:[{
-                type: 'component',
-                componentName: 'testComponent',
-                componentState: { label: 'B' }
-            },{
-                type: 'component',
-                componentName: 'testComponent',
-                componentState: { label: 'C' }
-            }]
-        }]
-    }]
+	content: [{
+		type: 'row',
+		content:[
+			{
+				type: 'component',
+				width: 20,
+				componentName: 'testComponent',
+				componentState: { label: 'File viewer' }
+			},
+			{
+				type: 'column',
+				content: [
+					{
+						type: 'component',
+						componentName: 'testComponent',
+						componentState: { label: 'main design view' }
+					},
+					{
+						type: 'component',
+						componentName: 'testComponent',
+						componentState: { func: () => <div id='output' class='output' /> }
+					}
+				]
+			},
+			{
+				type: 'component',
+				width: 20,
+				componentName: 'testComponent',
+				componentState: { label: 'property tree' }
+			},
+		]
+	}]
 };
 let myLayout = new GoldenLayout( config );
 myLayout.registerComponent( 'testComponent', ( container, state ) => {

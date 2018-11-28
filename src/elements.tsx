@@ -4,13 +4,8 @@ import { selector as $, escapeHtml } from './helper';
 import { dom } from 'isomorphic-jsx';
 dom(); // @babel/preset-typescript hack
 
-const presets = [
-	require('@babel/preset-react'),
-	require('@babel/preset-env')
-];
-
 const Elements = ({ parsed }) => {
-	const { code } = generate(parsed, presets);
+	const { code } = generate(parsed);
 
 	return <pre><code>
 		{ escapeHtml(code) }

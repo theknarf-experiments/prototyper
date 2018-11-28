@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "typecheck": "tsc --noEmit --allowJs --jsx preserve --pretty --skipLibCheck src/index.tsx",
-    "dev": "webpack-dev-server"
+    "dev": "node ./src/server.js"
   },
   "author": "Frank Lyder Bredland <fl@nyggen.com>",
   "license": "MIT",
@@ -37,6 +37,7 @@
     "@fortawesome/fontawesome-free": "^5.5.0",
     "express": "^4.16.4",
     "golden-layout": "^1.5.9",
-    "isomorphic-jsx": "^0.3.0"
+    "isomorphic-jsx": "^0.3.0",
+    "webpack-hot-middleware": "^2.24.3"
   }
 }

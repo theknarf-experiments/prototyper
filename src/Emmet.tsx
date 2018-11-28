@@ -50,10 +50,11 @@ const Emmet = ({ id, onReady }) => {
 				const output = `const Component = ({children}) => \n <>${html}</>;`;
 
 				const parsed = parseSync(output, babelrc);
-				//console.log('parsed:', parsed.program.body)
+
 				transform(output, babelrc, (err, result) => {
 					const code = "import { dom, fragment } from 'isomorphic-jsx';\n\n" + result.code;
 					$('#output_compiled').innerHTML = <pre><code>{escapeHtml(code)}</code></pre>;
+					// Adding functions to the window variable so that they are available in the eval-function
 					//@ts-ignore
 					window.dom = dom;
 					//@ts-ignore
@@ -61,6 +62,7 @@ const Emmet = ({ id, onReady }) => {
 					//@ts-ignore
 					window.updateContent = ( html ) => $('#content').src = "data:text/html;charset=utf-8," + html;
 					eval(result.code + "\n\n var result = dom(Component); updateContent(result);");
+					// At this point we could set window.dom, window.fragment, etc to null; but it really doesn't matter.
 				});
 				
 				$('#output').innerHTML = <Elements parsed={parsed} />

@@ -60,8 +60,20 @@ const Emmet = ({ id, onReady }) => {
 					//@ts-ignore
 					window.fragment = fragment;
 					//@ts-ignore
-					window.updateContent = ( html ) => $('#content').src = "data:text/html;charset=utf-8," + html;
-					eval(result.code + "\n\n var result = dom(Component); updateContent(result);");
+					const iframe = $('#content');
+					iframe.src = "data:text/html;charset=utf-8," + <html>
+						<body>
+							<div id="content"></div>
+							<script>
+								window.addEventListener('message', data => document.getElementById("content").innerHTML = data.data, false);
+							</script>
+						</body>
+					</html>;
+
+					window.update = data =>
+    					setTimeout( () => iframe.contentWindow.postMessage(data || 'test', '*'), 100);
+
+					eval(result.code + "\n\n var result = dom(Component); update(result);");
 					// At this point we could set window.dom, window.fragment, etc to null; but it really doesn't matter.
 				});
 				

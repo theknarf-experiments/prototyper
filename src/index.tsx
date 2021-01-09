@@ -5,6 +5,7 @@ import GoldenLayout from 'golden-layout';
 import 'golden-layout/src/css/goldenlayout-base.css';
 import 'golden-layout/src/css/goldenlayout-dark-theme.css';
 import './default.css';
+import PropertyTree from './propertytree';
 
 import { dom, fragment } from 'isomorphic-jsx';
 dom(); fragment({ children: [] }); // @babel/preset-typescript hack
@@ -65,7 +66,7 @@ var config = {
 			{
 				type: 'component',
 				width: 20,
-				componentName: 'testComponent',
+				componentName: 'propertytree',
 				title: 'Property tree',
 				componentState: { label: 'property tree' }
 			},
@@ -79,6 +80,11 @@ myLayout.registerComponent( 'testComponent', ( container, state ) => {
 		(typeof Func == 'function') ?
 		<Func /> :
 		<h2 style={{ color: 'white', padding: '0 20px' }}>{ state.label }</h2>
+	);
+});
+myLayout.registerComponent( 'propertytree', ( container, state ) => {
+	container.getElement().html(
+		<PropertyTree />			
 	);
 });
 myLayout.init();

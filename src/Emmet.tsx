@@ -47,7 +47,7 @@ const Emmet = ({ id, onReady }) => {
 				});
 				makeInvisible();
 
-				const output = `const Component = ({children}) => \n <>${html}</>;`;
+				const output = `const Component = ({children}) => \n <>\n${html}\n</>;`;
 
 				const parsed = parseSync(output, babelrc);
 
@@ -65,7 +65,9 @@ const Emmet = ({ id, onReady }) => {
 						<body>
 							<div id="content"></div>
 							<script>
-								window.addEventListener('message', data => document.getElementById("content").innerHTML = data.data, false);
+								window.addEventListener('message', data =>
+									document.getElementById("content").innerHTML = data.data
+								, false);
 							</script>
 						</body>
 					</html>;

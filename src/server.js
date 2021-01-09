@@ -20,6 +20,11 @@ require("fs").readdirSync(normalizedPath).forEach(function(file) {
 	require("./routes/" + file)(app);
 });
 
-app.listen(port, () =>
+app.listen(port, () => {
 	console.log('App listening on http://localhost:' + port)
-);
+
+	if(process.argv.filter( arg => arg === '--open' ).length > 0) {
+		const open = require("open");
+		open("http://localhost:" + port);
+	}
+});

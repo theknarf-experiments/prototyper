@@ -38,6 +38,7 @@
     "express": "^4.16.4",
     "golden-layout": "^1.5.9",
     "isomorphic-jsx": "^0.3.0",
+    "open": "0.0.5",
     "webpack-hot-middleware": "^2.24.3"
   }
 }
